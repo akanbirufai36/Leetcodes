@@ -1,46 +1,24 @@
-# Example 1
-l1 = [9, 9, 9, 9, 9, 9, 9]
-l2 = [9, 9, 9, 9]
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def addTwoNumbers(self, l1: ListNode | None, l2: ListNode | None) -> ListNode | None:
+        dummy = ListNode(0)
+        curr = dummy
+        carry = 0
 
-# Example 2
-l1 = [2, 4, 3]
-l2 = [5, 6, 4]
+        while carry or l1 or l2:
+            v1 = l1.val if l1 else 0
+            v2 = l2.val if l2 else 0
 
+            total = v1 + v2 + carry
+            carry = total // 10
+            curr.next = ListNode(total % 10)
+            curr = curr.next
 
-def check_longest(l1: list, l2: list):
-    if len(l1) > len(l2):
-        return l1
-    else:
-        return l2
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
 
-
-long = check_longest(l1, l2)
-
-
-def decUnits(a, b, carry=0):
-    total = int(a) + int(b) + int(carry)
-    return total // 10, total % 10
-
-
-carry = 0
-result = ''
-for i in range(len(long)):
-    try:
-        a = l1[i]
-    except IndexError:
-        a = 0
-    try:
-        b = l2[i]
-    except IndexError:
-        b = 0
-
-    carry, digit = decUnits(a, b, carry)
-    result += str(digit)
-
-
-# leftover carry after the loop becomes one more digit
-if carry != 0:
-    result += str(carry)
-
-result = result[::-1]
-print(result)
+        return dummy.next
